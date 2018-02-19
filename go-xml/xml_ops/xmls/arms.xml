@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="style.xsl"?>
+<payloads>
+    <payload capacity="heavy">
+        <id>3428fheqfdfadafd97r</id>
+        <actions>
+            <action>lift</action>
+            <action>drop</action>
+        </actions>
+    </payload>
+    <payload capacity="medium">
+        <id>3428fheqfdafd97r</id>
+        <actions>
+            <action>lift</action>
+            <action>drop</action>
+        </actions>
+    </payload>
+    <payload capacity="medium">
+        <id>3428fhedafd97r</id>
+        <actions>
+            <action>lift</action>
+            <action>drop</action>
+        </actions>
+    </payload>
+    <payload capacity="medium">
+        <id>3428fhedafd97r</id>
+        <actions>
+            <action>lift</action>
+            <action>drop</action>
+        </actions>
+    </payload>
+    <payload capacity="light">
+        <id>3428edafd97r</id>
+        <actions>
+            <action>lift</action>
+            <action>drop</action>
+        </actions>
+    </payload>
+</payloads>
