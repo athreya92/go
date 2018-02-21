@@ -15,7 +15,7 @@ import (
 func main() {
 	log.Println("Starting service")
 	// create a listener on TCP port 7777
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 7777))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 2222))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

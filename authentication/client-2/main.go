@@ -31,7 +31,7 @@ func main() {
 		Username:"admin",
 		Password:"admin123",
 	}
-	conn, err := grpc.Dial("localhost:7777", grpc.WithInsecure(),grpc.WithPerRPCCredentials(auth))
+	conn, err := grpc.Dial("localhost:2222", grpc.WithInsecure(),grpc.WithPerRPCCredentials(auth))
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}

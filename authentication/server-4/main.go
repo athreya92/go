@@ -16,13 +16,13 @@ import (
 func main() {
 	log.Println("Starting service")
 	// create a listener on TCP port 7777
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 1111))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 4444))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	// create a server instance
 	s := serverImpl.ServerImpl{}
-	creds, err := credentials.NewServerTLSFromFile("certs/server.crt", "certs/server.key")
+	creds, err := credentials.NewServerTLSFromFile("certs1/server.crt", "certs1/server.key")
 	if err != nil {
 		log.Fatalf("could not load TLS keys: %s", err)
 	}

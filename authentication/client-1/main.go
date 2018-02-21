@@ -12,12 +12,12 @@ import (
 //grpc authentication via Transport credentials -- using CA certificates
 func main() {
 	var conn *grpc.ClientConn
-	creds, err := credentials.NewClientTLSFromFile("certs/server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("certs1/server.crt", "")
 	if err != nil {
 		log.Fatalf("could not load tls cert: %s", err)
 	}
 
-	conn, errr := grpc.Dial("localhost:8888", grpc.WithTransportCredentials(creds))
+	conn, errr := grpc.Dial("localhost:1111", grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("did not connect: %s", errr)
 	}

@@ -13,19 +13,19 @@ import (
 //grpc authentication via Transport credentials -- using CA certificates and metadata kv pairs
 func main() {
 	var conn *grpc.ClientConn
-	creds, err := credentials.NewClientTLSFromFile("certs/server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("certs1/server.crt", "")
 	if err != nil {
 		log.Fatalf("could not load tls cert: %s", err)
 	}
 
-	conn, errr := grpc.Dial("localhost:9999", grpc.WithTransportCredentials(creds))
+	conn, errr := grpc.Dial("localhost:3333", grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatalf("did not connect: %s", errr)
 	}
 	defer conn.Close()
 	c := pb.NewPingClient(conn)
 
-	
+
 	md := metadata.Pairs("authorization", "valid-token")
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
 

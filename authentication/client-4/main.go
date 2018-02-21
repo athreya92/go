@@ -27,7 +27,7 @@ func (c *Login) RequireTransportSecurity() bool {
 
 //RPC credential based authentication with TLS credentials
 func main() {
-	creds, err := credentials.NewClientTLSFromFile("certs/server.crt", "")
+	creds, err := credentials.NewClientTLSFromFile("certs1/server.crt", "")
 	if err != nil {
 		log.Fatalf("could not load tls cert: %s", err)
 	}
@@ -36,7 +36,7 @@ func main() {
 		Username:"admin",
 		Password:"admin123",
 	}
-	conn, err := grpc.Dial("localhost:1111", grpc.WithTransportCredentials(creds),grpc.WithPerRPCCredentials(auth))
+	conn, err := grpc.Dial("localhost:4444", grpc.WithTransportCredentials(creds),grpc.WithPerRPCCredentials(auth))
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
