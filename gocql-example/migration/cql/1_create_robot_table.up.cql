@@ -1,7 +1,10 @@
-CREATE TABLE IF NOT EXISTS robots (
-	serialNo text,
-	robotName text, 
-	robotType text, 
-	ipAddress text,
-	PRIMARY KEY(serialNo, robotName)
+CREATE TABLE IF NOT EXISTS robot_basicInfo (
+	robot_id text,
+	name text,
+	type text,
+	host_ip text,
+	vendor text,
+	model text,
+	PRIMARY KEY(type ,robot_id)
 );
+

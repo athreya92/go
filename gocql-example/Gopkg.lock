@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/adam-hanna/arrayOperations"
+  packages = ["."]
+  revision = "c25e9f1881f2aee7b97b758fd93e6879debd6867"
+  version = "v0.2.4"
+
+[[projects]]
   branch = "master"
   name = "github.com/gocql/gocql"
   packages = [".","internal/lru","internal/murmur","internal/streams"]
@@ -20,6 +26,18 @@
   revision = "e80d13ce29ede4452c43dea11e79b9bc8a15b478"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/juliangruber/go-intersect"
+  packages = ["."]
+  revision = "b60b3a5b35ade098834e63cf9e094108650641a2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mattes/migrate"
+  packages = [".","database","database/cassandra","source","source/file"]
+  revision = "d23f71b03c4a439b81ccccb2ac5090032ec5c735"
+
+[[projects]]
   name = "gopkg.in/inf.v0"
   packages = ["."]
   revision = "3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4"
@@ -28,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e2bd0cceec3ceebc2655c035c0c79827f5184a6302eeb6cea091593a708e0348"
+  inputs-digest = "69c84d1963759e17fb8b3d5d5a2539082ed14b4ecef90f57726c3eaa7a69639a"
   solver-name = "gps-cdcl"
   solver-version = 1

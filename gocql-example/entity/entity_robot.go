@@ -1,40 +1,30 @@
 package entity
 
-type Robot struct {
-	Serialno  string
-	RobotName string
-	RobotType string
-	Ipaddress string
+type BasicRobotInfo struct {
+	Robot_id string
+	Name     string
+	Type     string
+	Host_ip  string
 }
 
-func (r *Robot) SetSerialNo(serialNo string) {
-	r.Serialno = serialNo
+type RobotInfo struct {
+	Robot_id string
+	Name     string
+	Type     string
+	Host_ip  string
+	Vendor   string
+	Model    string
+	Payloads []Payload
 }
 
-func (r Robot) SerialNo() string {
-	return r.Serialno
+type PayloadConfig struct {
+	Capacity string
+	Resolution string
 }
 
-func (r *Robot) SetName(robotName string) {
-	r.RobotName = robotName
-}
-
-func (r Robot) Name() string {
-	return r.RobotName
-}
-
-func (r *Robot) SetType(robotType string) {
-	r.RobotType = robotType
-}
-
-func (r Robot) Type() string {
-	return r.RobotType
-}
-
-func (r *Robot) SetIpAddress(ipAddress string) {
-	r.Ipaddress = ipAddress
-}
-
-func (r Robot) IpAddress() string {
-	return r.Ipaddress
+type Payload struct {
+	Payload_id  string
+	PayloadType string
+	Actions     []string
+	Config      PayloadConfig
 }
