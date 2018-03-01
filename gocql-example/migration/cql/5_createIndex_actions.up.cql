@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS actions_idx ON robot_actionInfo (actions);

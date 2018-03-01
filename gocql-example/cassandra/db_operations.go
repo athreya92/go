@@ -4,19 +4,23 @@ import (
 	"go/gocql-example/entity"
 	"log"
 	"github.com/gocql/gocql"
-	ops "github.com/adam-hanna/arrayOperations"
 )
 
 var (
-	dbManager          = GetInstance()
+	dbManager                 = GetInstance()
 	query       *gocql.Query
 	robotId     string
 	payloadId   string
 	name        string
 	rtype       string
 	host        string
-	model string
-	vendor string
+	model       string
+	vendor      string
+	ptype       string
+	confName    string
+	confValue   string
+	payloadList []entity.Payload
+	actions     []string
 )
 
 const (
@@ -27,6 +31,9 @@ const (
 	PayloadByPropQuery        = "SELECT payload_id from payload_info WHERE type = ? AND properties = (?,?)"
 	RobotSearchByPayloadQuery = "SELECT robot_id from robot_payloadInfo WHERE payload_id = ?"
 	FindRobotById 			  = "SELECT * from robot_basicInfo WHERE robot_id = ? ALLOW FILTERING"
+	AllPayloadsQuery 		  = "SELECT type, properties from payload_info"
+	RobotActionsInsertQuery   = "INSERT INTO robot_actionInfo (robot_id, actions) VALUES (?,?)"
+	GetActionsByRobotQuery    = "SELECT actions FROM robot_actionInfo WHERE robot_id = ?"
 )
 
 func InsertRobotInfo(robot entity.RobotInfo) error {
@@ -35,14 +42,28 @@ func InsertRobotInfo(robot entity.RobotInfo) error {
 		log.Println("Failed to insert robot data to database", err)
 		return err
 	}
-	 if errr := insertPayloadInfo(robot); errr != nil {
-	 	return errr
+	 if err := insertPayloadInfo(robot); err != nil {
+	 	return err
 	 }
 
-	 insertRobotPayloadInfo(robot)
+	 if err := insertRobotPayloadInfo(robot); err != nil {
+	 	return err
+	 }
+	 if err := insertRobotActionInfo(robot); err != nil {
+		 return err
+	 }
 	log.Println("Robot insertion successful")
 	return nil
+}
 
+func insertRobotActionInfo(robot entity.RobotInfo) error {
+	query = dbManager.Session.Query(RobotActionsInsertQuery, robot.Robot_id, robot.Actions)
+		if err := query.Exec(); err != nil {
+			log.Println("Failed to insert robot_action data to database", err)
+			return err
+		}
+	log.Println("robot_action insertion successful")
+	return nil
 }
 
 func insertRobotPayloadInfo(robot entity.RobotInfo) error {
@@ -67,11 +88,7 @@ func insertPayloadInfo(robot entity.RobotInfo) error {
 		ptype := payload.PayloadType
 		props := payload.Config
 		pid := payload.Payload_id
-		if props.Capacity != "" {
-			query = dbManager.Session.Query(PayloadInsertQuery, ptype, "capacity", props.Capacity, pid)
-		} else {
-			query = dbManager.Session.Query(PayloadInsertQuery, ptype, "resolution", props.Resolution, pid)
-		}
+		query = dbManager.Session.Query(PayloadInsertQuery, ptype, props.ConfigName, props.ConfigValue, pid)
 		if err := query.Exec(); err != nil {
 			log.Println("Failed to insert payload data to database", err)
 			return err
@@ -82,14 +99,79 @@ func insertPayloadInfo(robot entity.RobotInfo) error {
 	return nil
 }
 
-func searchPayloadByProp(payload entity.Payload) []string {
-	var payloadList []string
-	ptype := payload.PayloadType
-	if ptype == "Arm" {
-		query = dbManager.Session.Query(PayloadByPropQuery, payload.PayloadType,"capacity", payload.Config.Capacity)
-	} else {
-		query = dbManager.Session.Query(PayloadByPropQuery, payload.PayloadType,"resolution", payload.Config.Resolution)
+func GetAllPayloads() []entity.Payload {
+	query = dbManager.Session.Query(AllPayloadsQuery)
+	iterator := query.Iter()
+	for iterator.Scan(&ptype,&confName,&confValue) {
+		pload := entity.Payload{
+			PayloadType:ptype,
+			Config: struct {
+				ConfigName  string
+				ConfigValue string
+			}{ConfigName: confName, ConfigValue: confValue},
+		}
+		payloadList = append(payloadList,pload)
 	}
+	return payloadList
+}
+
+func GetActionsByRobot(robot entity.BasicRobotInfo) ([]string,error) {
+	query = dbManager.Session.Query(GetActionsByRobotQuery, robot.Robot_id)
+	if err := query.Scan(&actions); err != nil {
+		log.Println("Failed to fetch actions for the robot")
+		return nil,err
+	}
+	return actions,nil
+}
+
+func GetAllActions() []string {
+	return nil
+}
+
+func GetRobots(payloads []entity.Payload) []string {
+	var robots, tempRobots []string
+	if len(payloads) > 1 {
+		for _, payload := range payloads {
+			temp := findAllRobotsWithRequestedPayloads(payload)
+			tempRobots = append(tempRobots,temp...)
+		}
+		robots = getDuplicates(tempRobots)
+	} else {
+		robots = findAllRobotsWithRequestedPayloads(payloads[0])
+	}
+	return robots
+}
+
+func findAllRobotsWithRequestedPayloads(payload entity.Payload) []string {
+	var payloadIdList []string
+	payloadIds := searchPayloadWithConfig(payload)
+	payloadIdList = append(payloadIdList, payloadIds...)
+	robots := findAllRobotsWithPayloadIds(payloadIdList)
+	return robots
+}
+
+func getDuplicates(ids []string) []string {
+	result := []string{}
+	for i := 0; i < len(ids); i++ {
+		// Scan slice for a previous element of the same value.
+		exists := false
+		for v := 0; v < i; v++ {
+			if ids[v] == ids[i] {
+				exists = true
+				break
+			}
+		}
+		// If previous element exists, append.
+		if exists {
+			result = append(result, ids[i])
+		}
+	}
+	return result
+}
+
+func searchPayloadWithConfig(payload entity.Payload) []string {
+	var payloadList []string
+	query = dbManager.Session.Query(PayloadByPropQuery, payload.PayloadType,payload.Config.ConfigName, payload.Config.ConfigValue)
 	iterator := query.Iter()
 	for iterator.Scan(&payloadId) {
 		payloadList = append(payloadList, payloadId)
@@ -97,39 +179,20 @@ func searchPayloadByProp(payload entity.Payload) []string {
 	return payloadList
 }
 
-func GetRobots(payloads []entity.Payload) []entity.BasicRobotInfo {
-	var robotsWithArm []string
-	var robotsWithCamera []string
-	var robots []entity.BasicRobotInfo
-	for _,payload := range payloads {
-		if payload.PayloadType == "Arm" {
-			armIds := searchPayloadByProp(payload)
-			robotsWithArm = findRobotsByPayload(armIds)
-		} else {
-			cameraIds := searchPayloadByProp(payload)
-			robotsWithCamera = findRobotsByPayload(cameraIds)
+func findAllRobotsWithPayloadIds(payloadIds []string) []string {
+	var robots []string
+	for _, payloadId := range payloadIds {
+		query = dbManager.Session.Query(RobotSearchByPayloadQuery, payloadId)
+		if err := query.Scan(&robotId); err != nil {
+			log.Println("Failed to find robot by payload data in database", err)
 		}
-	}
-	if robotsWithArm == nil || robotsWithCamera == nil || (robotsWithArm == nil && robotsWithCamera == nil) {
-		log.Println("No robot with these payload properties")
-		return nil
-	}
-	temp, ok := ops.Intersect(robotsWithArm, robotsWithCamera)
-	if !ok {
-		log.Println("No robot with these payload properties")
-		return nil
-	}
-
-	robotIds := temp.Interface().([]string)
-	for _,robotId := range robotIds {
-		robot := findRobotById(robotId)
-		robots = append(robots,robot)
+		robots = append(robots, robotId)
 	}
 	return robots
 }
 
-func findRobotById(id string) entity.BasicRobotInfo {
-	query = dbManager.Session.Query(FindRobotById, id)
+func FindRobotByRobotId(robotId string) entity.BasicRobotInfo {
+	query = dbManager.Session.Query(FindRobotById, robotId)
 	if err := query.Scan(&rtype, &robotId, &host, &model, &name, &vendor); err != nil {
 		log.Println("Failed to find robot", err)
 	}
@@ -142,16 +205,5 @@ func findRobotById(id string) entity.BasicRobotInfo {
 	return robot
 }
 
-func findRobotsByPayload(armIds []string) []string {
-	var robots []string
-	for _, id := range armIds {
-		query = dbManager.Session.Query(RobotSearchByPayloadQuery, id)
-		if err := query.Scan(&robotId); err != nil {
-			log.Println("Failed to find robot by payload data to database", err)
-		}
-		robots = append(robots, robotId)
-	}
-	return robots
-}
 
 

@@ -1,0 +1,30 @@
+	armConfigC := entity.PayloadConfig{
+		ConfigName:"capacity",
+		ConfigValue:"light",
+	}
+	cameraConfigC := entity.PayloadConfig{
+		ConfigName:"resolution",
+		ConfigValue:"720",
+	}
+	armPayloadC := entity.Payload{
+		Payload_id:  "6",
+		PayloadType: "Arm",
+		Config:      armConfigC,
+	}
+	cameraPayloadC := entity.Payload{
+		Payload_id:  "9",
+		PayloadType: "Camera",
+		Config:      cameraConfigC,
+	}
+
+	payloadsC = append(payloadsC, armPayloadC, cameraPayloadC)
+	robotC := entity.RobotInfo{
+		Robot_id: "3",
+		Name:     "Robot-C",
+		Type:     "Innok",
+		Host_ip:  "127.1.1.1",
+		Vendor:   "Innok",
+		Model:    "Heroes",
+		Payloads: payloadsC,
+		Actions:     []string{"lift","drop","start_video","stop_video","take_snapshot"},
+	}

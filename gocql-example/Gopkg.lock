@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  name = "github.com/adam-hanna/arrayOperations"
+  branch = "master"
+  name = "github.com/athreya92/go-intersect"
   packages = ["."]
-  revision = "c25e9f1881f2aee7b97b758fd93e6879debd6867"
-  version = "v0.2.4"
+  revision = "cbe6bf39410fd0101866f11669be18e07bf3207a"
 
 [[projects]]
   branch = "master"
@@ -27,12 +27,6 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/juliangruber/go-intersect"
-  packages = ["."]
-  revision = "b60b3a5b35ade098834e63cf9e094108650641a2"
-
-[[projects]]
-  branch = "master"
   name = "github.com/mattes/migrate"
   packages = [".","database","database/cassandra","source","source/file"]
   revision = "d23f71b03c4a439b81ccccb2ac5090032ec5c735"
@@ -46,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "69c84d1963759e17fb8b3d5d5a2539082ed14b4ecef90f57726c3eaa7a69639a"
+  inputs-digest = "a404b26fd53a1ce57f74dc5b1ce02c8e54bf76497b6f1546bf6c393f1c26529c"
   solver-name = "gps-cdcl"
   solver-version = 1

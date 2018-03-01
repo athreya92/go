@@ -15,16 +15,16 @@ type RobotInfo struct {
 	Vendor   string
 	Model    string
 	Payloads []Payload
+	Actions []string
 }
 
 type PayloadConfig struct {
-	Capacity string
-	Resolution string
+	ConfigName string
+	ConfigValue string
 }
 
 type Payload struct {
 	Payload_id  string
 	PayloadType string
-	Actions     []string
 	Config      PayloadConfig
 }
