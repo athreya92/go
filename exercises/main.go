@@ -1,32 +1,33 @@
 package main
 
+import "fmt"
+
 func main() {
-
-	Swap(10, 20)
-	Swap("shreyas", "athreya")
-	Reverse([]interface{}{1, 3, 5, 7, 10})
-	Reverse([]interface{}{"I","LOVE", "INDIA", 5, 7, 10})
-	Palindrome([]interface{}{"m", "a", "l", "a", "y", "a", "l", "a", "m"})
-	CopySlice([]interface{}{3, 4})
-	CopySlice([]interface{}{"a", "b"})
-	CopyMap(map[interface{}]interface{}{1: "xyz", 2: "php"})
-
-	var s Stack
-	s.Empty()
-	s.Push(1)
-	s.Push(2)
-	s.Empty()
+	ReverseWords("I am an asshole")
+	FizzBuzz(3, 50)
+	fibonacci(10)
+	fmt.Println(AllUniqueSet("ashole"))
+	s := createStack(3)
+	s.Push(5)
+	s.Push(10)
+	s.Push(12)
+	s.Push(13)
+	s.Top()
 	s.Pop()
-	s.Pop()
-	s.Empty()
+	s.Top()
+	s.FirstElement()
 
-	var q Queue
-	q.Empty()
-	q.Enqueue(3)
-	q.Enqueue(4)
-	q.Empty()
+	q := createQueue(3)
+	q.Enqueue(10)
+	q.Enqueue(25)
+	q.Enqueue(100)
+	q.Enqueue(235)
+	q.First()
 	q.Dequeue()
-	q.Dequeue()
-	q.Empty()
+	moveZeroesToEnd([]int{0,0,1,0,3,5,0,8})
+
+	fmt.Println(sortRGB2([]string{"G", "B", "R", "R", "B", "R", "G"}))
+	fmt.Println(MultiplyArraySubtractIndex([]int{1, 4, 5, 7, 5}))
+	fmt.Println(firstNonDuplicate("qeywerryq"))
+
 }
-
