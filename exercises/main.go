@@ -41,4 +41,22 @@ func main() {
 	list.RemoveAt(0)
 	list.PrintLinkedList()
 
+	lStack := CreateLStack()
+	lStack.Push(10)
+	lStack.Push(20)
+	lStack.Push(30)
+	lStack.PrintStack()
+	lStack.Pop()
+	lStack.PrintStack()
+
+	lQueue := CreateLQueue()
+	lQueue.Dequeue()
+	lQueue.Enqueue(10)
+	lQueue.Enqueue(20)
+	lQueue.Enqueue(30)
+	lQueue.PrintQueue()
+	lQueue.Dequeue()
+	fmt.Println()
+	lQueue.PrintQueue()
+
 }
