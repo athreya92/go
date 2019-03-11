@@ -28,6 +28,7 @@ func sortRGB1(s []string) []string {
 }
 
 func sortRGB2(s []string) []string {
+	// Dutch National Flag problem
 	i, j := 0, 0
 	l := len(s) - 1
 
