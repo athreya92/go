@@ -30,4 +30,15 @@ func main() {
 	fmt.Println(MultiplyArraySubtractIndex([]int{1, 4, 5, 7, 5}))
 	fmt.Println(firstNonDuplicate("qeywerryq"))
 
+	list := CreateLinkedList()
+	list.Append(10)
+	list.Append(20)
+	list.InsertAt(5, 30)
+	list.InsertAt(0,50)
+	list.InsertAt(2, 70)
+	list.PrintLinkedList()
+	list.RemoveAt(4)
+	list.RemoveAt(0)
+	list.PrintLinkedList()
+
 }
