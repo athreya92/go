@@ -59,4 +59,12 @@ func main() {
 	fmt.Println()
 	lQueue.PrintQueue()
 
+	sQueue := CreateSQueue(5)
+	sQueue.Enqueue(1)
+	sQueue.Enqueue(3)
+	sQueue.Dequeue()
+	sQueue.Enqueue(10)
+	sQueue.Dequeue()
+	sQueue.Dequeue()
+
 }
