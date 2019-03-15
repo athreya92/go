@@ -67,4 +67,6 @@ func main() {
 	sQueue.Dequeue()
 	sQueue.Dequeue()
 
+	SliceWindow([]byte{'h', 'e', 'l', 'l', 'o', ' '})
+
 }
